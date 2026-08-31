@@ -1,12 +1,10 @@
 <div align="center">
 
-# 👋 Hi, I'm Sambhav Yadav
+# 👋 Presenting You, **Sambhav Yadav**
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=24&duration=2500&pause=800&color=00F7FF&center=true&vCenter=true&width=800&lines=Presenting+You%2C+Sambhav+Yadav+%E2%9C%A8;Data+Scientist+in+Progress+%F0%9F%93%8A;AI%2FML+Enthusiast+%F0%9F%A4%96;DSA+Explorer+with+Java+%E2%98%95;Building+Ideas+into+Real+Projects+%F0%9F%9A%80" />
 
 ### 📊 Data Scientist in Progress • 🤖 AI/ML Enthusiast • ☕ DSA Explorer
-
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=2800&pause=900&color=00F7FF&center=true&vCenter=true&width=750&lines=Building+with+Data+%26+AI+%F0%9F%A4%96;Mastering+DSA+with+Java+%E2%98%95;Learning+%7C+Building+%7C+Improving+%F0%9F%9A%80;Turning+Ideas+into+Real+Projects+%F0%9F%92%A1" />
-
-<br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-sambhav--coder-181717?style=for-the-badge&logo=github)](https://github.com/sambhav-coder)
 [![Email](https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ry526270@gmail.com)
@@ -31,7 +29,7 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 ## ⚡ Currently Learning
 
 - 📊 Data Science & Data Analysis
-- 🐍 Python & Data Science libraries
+- 🐍 Python & its Data Science ecosystem
 - 🤖 Machine Learning & AI
 - ☕ Java & Data Structures
 - 🧩 Algorithms & Problem Solving
@@ -39,22 +37,46 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
-### 💻 Languages
+## 🐍 Python
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+
+> 🐍 Python — my main language for Data Science
+
+**🐍 → Learning → Building → Experimenting → Improving**
+
+---
+
+## 🐘 SQL
+
 ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-### 📊 Data Science & Machine Learning
+> 🐘 SQL — working with data, databases & queries
+
+**🐘 → Query → Analyze → Understand → Repeat**
+
+---
+
+## ☕ Java
+
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+
+> ☕ Java — my language for DSA & problem solving
+
+---
+
+## 📊 Data Science & Machine Learning
 
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=python&logoColor=white)
 ![Scikit Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
-### 🧰 Tools
+---
+
+## 🧰 Tools
 
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
@@ -63,29 +85,33 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ---
 
-## 🚀 Featured Projects
+# 🚀 Featured Projects
 
-### 🛡️ Cyber Sakhi
+## 🛡️ Cyber Sakhi
 
-**An AI-powered project focused on helping users navigate cybersecurity-related challenges.**
+**An AI-powered project focused on cybersecurity awareness and assistance.**
 
-➡️ [View Project](https://github.com/sambhav-coder/cyber-sakhi)
-
-### ☕ DSA Java Journey
-
-**My journey of learning Data Structures & Algorithms using Java.**
-
-➡️ [View Repository](https://github.com/sambhav-coder/DSA-Java-Journey)
-
-### 🧩 LeetCode Solutions
-
-**Solutions and practice as I work towards strengthening my DSA skills.**
-
-➡️ [View Repository](https://github.com/sambhav-coder/Leetcode-solutions)
+🔗 [View Cyber Sakhi](https://github.com/sambhav-coder/cyber-sakhi)
 
 ---
 
-## 📈 GitHub Stats
+## ☕ DSA Java Journey
+
+**My journey of learning Data Structures & Algorithms using Java.**
+
+🔗 [View Repository](https://github.com/sambhav-coder/DSA-Java-Journey)
+
+---
+
+## 🧩 LeetCode Solutions
+
+**Solutions and practice as I strengthen my DSA skills.**
+
+🔗 [View Repository](https://github.com/sambhav-coder/Leetcode-solutions)
+
+---
+
+# 📈 GitHub Stats
 
 ![Sambhav's GitHub Stats](https://github-readme-stats.vercel.app/api?username=sambhav-coder&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
 
@@ -93,21 +119,21 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ---
 
-## 🔥 GitHub Activity
+# 🔥 Contribution Activity
 
 ![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=sambhav-coder&theme=tokyo-night&hide_border=true&area=true)
 
 ---
 
-## 🏆 GitHub Trophies
+# 🏆 GitHub Trophies
 
 ![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=sambhav-coder&theme=tokyonight&no-frame=true&no-bg=true&margin-w=8)
 
 ---
 
-## ☕ DSA Progress
+# ☕ DSA Progress
 
-**Java + Data Structures & Algorithms**
+### Java + Data Structures & Algorithms
 
 `Arrays` → `Strings` → `Linked Lists` → `Stacks` → `Queues`
 
@@ -117,13 +143,13 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ---
 
-## 💭 Developer Mindset
+# 💭 Developer Mindset
 
-### Learn → Build → Break → Debug → Improve → Repeat 🔁
+### 🧠 Learn → 🛠️ Build → 💥 Break → 🐛 Debug → 🚀 Improve → 🔁 Repeat
 
 ---
 
-## 🌐 Let's Connect
+# 🌐 Let's Connect
 
 [![GitHub](https://img.shields.io/badge/GitHub-sambhav--coder-181717?style=for-the-badge&logo=github)](https://github.com/sambhav-coder)
 
@@ -131,6 +157,12 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ---
 
+<div align="center">
+
+### ⚡ Building my skills, one commit at a time.
+
 ![Profile Views](https://komarev.com/ghpvc/?username=sambhav-coder&label=Profile%20Views&color=0e75b6&style=flat)
 
-⭐ **Building my skills, one commit at a time.**
+⭐ **Thanks for visiting!**
+
+</div>
