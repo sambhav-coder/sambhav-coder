@@ -1,9 +1,17 @@
+<div align="center">
+
 # 👋 Hi, I'm Sambhav Yadav
 
 ### 📊 Data Scientist in Progress • 🤖 AI/ML Enthusiast • ☕ DSA Explorer
 
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=2800&pause=900&color=00F7FF&center=true&vCenter=true&width=750&lines=Building+with+Data+%26+AI+%F0%9F%A4%96;Mastering+DSA+with+Java+%E2%98%95;Learning+%7C+Building+%7C+Improving+%F0%9F%9A%80;Turning+Ideas+into+Real+Projects+%F0%9F%92%A1" />
+
+<br>
+
 [![GitHub](https://img.shields.io/badge/GitHub-sambhav--coder-181717?style=for-the-badge&logo=github)](https://github.com/sambhav-coder)
 [![Email](https://img.shields.io/badge/Email-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ry526270@gmail.com)
+
+</div>
 
 ---
 
@@ -39,7 +47,7 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-### 📊 Data Science & ML
+### 📊 Data Science & Machine Learning
 
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
@@ -57,26 +65,29 @@ I'm currently focused on **Data Science, Machine Learning, AI and DSA**, while b
 
 ## 🚀 Featured Projects
 
+### 🛡️ Cyber Sakhi
+
+**An AI-powered project focused on helping users navigate cybersecurity-related challenges.**
+
+➡️ [View Project](https://github.com/sambhav-coder/cyber-sakhi)
+
 ### ☕ DSA Java Journey
+
 **My journey of learning Data Structures & Algorithms using Java.**
 
 ➡️ [View Repository](https://github.com/sambhav-coder/DSA-Java-Journey)
 
 ### 🧩 LeetCode Solutions
-**Solutions and practice as I work towards mastering DSA.**
+
+**Solutions and practice as I work towards strengthening my DSA skills.**
 
 ➡️ [View Repository](https://github.com/sambhav-coder/Leetcode-solutions)
-
-### 🐍 Python Learning Journey
-**My personal space for learning Python and building my Data Science foundation.**
-
-➡️ [View Repository](https://github.com/sambhav-coder/Journey_of_learning_Python)
 
 ---
 
 ## 📈 GitHub Stats
 
-![Sambhav's GitHub Stats](https://github-readme-stats.vercel.app/api?username=sambhav-coder&show_icons=true&theme=tokyonight&hide_border=true)
+![Sambhav's GitHub Stats](https://github-readme-stats.vercel.app/api?username=sambhav-coder&show_icons=true&theme=tokyonight&hide_border=true&rank_icon=github)
 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=sambhav-coder&layout=compact&theme=tokyonight&hide_border=true)
 
