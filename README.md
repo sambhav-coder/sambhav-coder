@@ -18,9 +18,9 @@
 
 <div align="center">
 
-[![My developer journey — interactive tree](./experience/assets/img/journey-preview.svg?v=1)](https://raw.githack.com/sambhav-coder/sambhav-coder/main/experience/journey/index.html)
+[![My developer journey — interactive tree](./experience/assets/img/journey-preview.svg?v=1)](https://sambhav-coder.github.io/sambhav-coder/journey/)
 
-**[▶ Explore my developer journey →](https://raw.githack.com/sambhav-coder/sambhav-coder/main/experience/journey/index.html)**
+**[▶ Explore my developer journey →](https://sambhav-coder.github.io/sambhav-coder/journey/)**
 
 <sub>An interactive tree of how I went from Java and DSA to shipping products — click any project node.</sub>
 
@@ -32,9 +32,9 @@
 
 <div align="center">
 
-[![Connect — interactive 3D car](./experience/assets/img/car-fallback.svg?v=1)](https://raw.githack.com/sambhav-coder/sambhav-coder/main/experience/car/index.html)
+[![Connect — interactive 3D car](./experience/assets/img/car-fallback.svg?v=1)](https://sambhav-coder.github.io/sambhav-coder/car/)
 
-**[▶ Explore the 3D car — connect with me →](https://raw.githack.com/sambhav-coder/sambhav-coder/main/experience/car/index.html)**
+**[▶ Explore the 3D car — connect with me →](https://sambhav-coder.github.io/sambhav-coder/car/)**
 
 <sub>Rotate the car, then select a window, light or bumper to reach me. If the 3D view can't load, the link grid on the page still works.</sub>
 
