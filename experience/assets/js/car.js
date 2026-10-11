@@ -40,6 +40,8 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   var scene = new THREE.Scene();
+  // fog colour matches the page's horizon tint so the road melts into the sky, not a hard edge
+  scene.fog = new THREE.Fog(0x0a1730, 12, 46);
   var camera = new THREE.PerspectiveCamera(34, 1, 0.1, 140);
 
   var target = new THREE.Vector3(0, 0.55, 0);
@@ -89,13 +91,65 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   under.position.set(0, 0.35, 0);
   scene.add(under);
 
-  /* ---------- ground ---------- */
-  var groundMat = new THREE.MeshStandardMaterial({ color: 0x05080f, roughness: 0.9, metalness: 0.1 });
-  groundMat.envMapIntensity = 0.18;
-  var ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), groundMat);
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  scene.add(ground);
+  /* ---------- road (asphalt surface + lane markings) ---------- */
+  function makeAsphaltTexture() {
+    var c = document.createElement("canvas");
+    c.width = c.height = 512;
+    var g = c.getContext("2d");
+    g.fillStyle = "#191d24";
+    g.fillRect(0, 0, 512, 512);
+    for (var i = 0; i < 12000; i++) {
+      var x = Math.random() * 512, y = Math.random() * 512;
+      var s = Math.random() * 1.7 + 0.3;
+      g.fillStyle = Math.random() > 0.55
+        ? "rgba(132,152,192," + (0.015 + Math.random() * 0.05) + ")"
+        : "rgba(0,0,0," + (0.05 + Math.random() * 0.15) + ")";
+      g.fillRect(x, y, s, s);
+    }
+    var t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(8, 8);
+    if ("colorSpace" in t) t.colorSpace = THREE.SRGBColorSpace;
+    if (renderer.capabilities && renderer.capabilities.getMaxAnisotropy) {
+      t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    }
+    return t;
+  }
+
+  var roadMat = new THREE.MeshStandardMaterial({ map: makeAsphaltTexture(), color: 0xffffff, roughness: 0.6, metalness: 0.14 });
+  roadMat.envMapIntensity = 0.4;
+  var road = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), roadMat);
+  road.rotation.x = -Math.PI / 2;
+  road.receiveShadow = true;
+  scene.add(road);
+
+  // dashed centre line (runs along the car's length, +Z)
+  var dashCanvas = document.createElement("canvas");
+  dashCanvas.width = 32; dashCanvas.height = 96;
+  var dg = dashCanvas.getContext("2d");
+  dg.fillStyle = "#eaf1ff";
+  dg.fillRect(0, 0, 32, 32);           // dash occupies 1/3 of the tile
+  var dashTex = new THREE.CanvasTexture(dashCanvas);
+  dashTex.wrapS = dashTex.wrapT = THREE.RepeatWrapping;
+  dashTex.repeat.set(1, 15);
+  if ("colorSpace" in dashTex) dashTex.colorSpace = THREE.SRGBColorSpace;
+
+  function lane(w, len, x, mat) {
+    var m = new THREE.Mesh(new THREE.PlaneGeometry(w, len), mat);
+    m.rotation.x = -Math.PI / 2;
+    m.position.set(x, 0.012, 0);
+    scene.add(m);
+    return m;
+  }
+  var solidMat = new THREE.MeshBasicMaterial({ color: 0xc6d2ea, transparent: true, opacity: 0.72 });
+  var dashMat = new THREE.MeshBasicMaterial({ map: dashTex, transparent: true, opacity: 0.85 });
+  var accentMat = new THREE.MeshBasicMaterial({ color: 0x247bff, transparent: true, opacity: 0.5 });
+
+  lane(0.16, 160, 0, dashMat);         // centre dashed line
+  lane(0.18, 160, 5.0, solidMat);      // solid lane edges
+  lane(0.18, 160, -5.0, solidMat);
+  lane(0.05, 160, 5.35, accentMat);    // faint electric-blue kerb glow
+  lane(0.05, 160, -5.35, accentMat);
 
   /* ---------- car (imported model) ---------- */
   var car = new THREE.Group();   // the thing the user rotates; hotspots are its children
