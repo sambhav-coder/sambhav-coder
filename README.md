@@ -10,6 +10,8 @@
 
 ![Connect](./assets/connect.svg?v=1)
 
+![Socials](./assets/socials.svg?v=1)
+
 </div>
 
 ---
