@@ -14,6 +14,12 @@
 .scene.dragging canvas{cursor:grabbing}
 .scene:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
+/* model loading state */
+.loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--blue-ink);
+  background:rgba(7,11,22,.55);pointer-events:none;z-index:2}
+.scene.no-webgl .loader{display:none}
+
 /* floating hotspot label */
 .hotlabel{position:absolute;transform:translate(-50%,-130%);pointer-events:none;
   font-family:var(--mono);font-size:11px;color:#eaf2ff;background:rgba(9,17,36,.92);

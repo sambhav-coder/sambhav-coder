@@ -47,6 +47,8 @@
             <button class="tool" id="reset" type="button">Reset view</button>
           </div>
 
+          <div class="loader" id="loader">Loading 3D car…</div>
+
           <div class="fallback" id="fallback">
             <img src="../assets/img/car-fallback.svg" alt="Illustration of a sports car" />
             <p>3D view needs WebGL. Use the links below — they work everywhere.</p>
@@ -99,10 +101,26 @@
 
   <div class="foot">
     Built as a standalone interactive experience · <a href="https://github.com/sambhav-coder">github.com/sambhav-coder</a>
+    <br><sub style="color:var(--muted)">3D car: “Car Concept” by Unity Fan (CC0), glTF by the Khronos Group — CC-BY-4.0 (attribution in vendor/models/).</sub>
   </div>
 </main>
 
-<script src="../vendor/three.min.js"></script>
-<script src="../assets/js/car.js"></script>
+<script type="importmap">
+{ "imports": { "three": "../vendor/three.module.min.js" } }
+</script>
+<script type="module" src="../assets/js/car.js"></script>
+<script>
+  // Watchdog: if the module never initialises (e.g. no import-map support), show the fallback.
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      if (!window.__carInit) {
+        var s = document.getElementById("scene");
+        if (s) s.classList.add("no-webgl");
+      }
+      var l = document.getElementById("loader");
+      if (l && window.__carInit) l.style.display = "none";
+    }, 5000);
+  });
+</script>
 </body>
 </html>

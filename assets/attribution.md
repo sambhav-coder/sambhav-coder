@@ -214,3 +214,21 @@ supplied by **Simple Icons** (<https://simpleicons.org>), which are released
 under the **CC0 1.0 Universal** public-domain dedication. The underlying
 brands and logos remain trademarks of their respective owners and are used
 here only to identify the technologies and platforms.
+
+## 3D model (interactive car)
+
+The 3D car in the standalone `experience/` site is **"Car Concept"**
+(`experience/vendor/models/CarConcept.glb`), a glTF sample asset.
+
+- Original model: "Free Concept Car 004" (public domain / CC0) by **Unity Fan**
+  on Sketchfab — https://sketchfab.com/3d-models/free-concept-car-004-public-domain-cc0-4cba124633eb494eadc3bb0c4660ad7e
+- glTF optimisation and publication: **Khronos Group**, `glTF-Sample-Assets` —
+  https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept
+- Licence: **Creative Commons Attribution 4.0 International (CC-BY-4.0)** —
+  https://creativecommons.org/licenses/by/4.0/ (full text in
+  `experience/vendor/models/CarConcept-LICENSE.md`).
+
+Attribution is provided on the 3D car page footer and in `experience/README.md`
+as required by CC-BY-4.0. The body paint colour was changed to a graphite /
+gunmetal finish to suit the dark studio scene; the model geometry is otherwise
+unmodified.

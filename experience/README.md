@@ -8,7 +8,8 @@ of the GitHub profile README:
 - `index.html` — a small landing page linking both.
 
 Nothing here talks to a server. There are **no external network calls at runtime**:
-Three.js is vendored at `vendor/three.min.js` and all icons are inline SVG.
+Three.js (r160, ES modules), `GLTFLoader` and the 3D model are vendored under
+`vendor/`, and all icons are inline SVG.
 
 ## Run locally
 
@@ -41,6 +42,16 @@ vercel --prod # production (only after you explicitly approve deploying)
 - `prefers-reduced-motion` disables the tree grow-in and the car's idle spin.
 - If WebGL is unavailable, the car scene swaps in a static illustration plus the
   same link grid instead of a black box.
+
+## 3D model licence & attribution
+
+The car scene renders `vendor/models/CarConcept.glb` — the **"Car Concept"** glTF sample:
+
+- **Original model:** "Free Concept Car 004 (public domain / CC0)" by **Unity Fan** (Sketchfab).
+- **glTF version:** optimised and published by the **Khronos Group** in `glTF-Sample-Assets`.
+- **Licence:** [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) — full text in
+  `vendor/models/CarConcept-LICENSE.md`. Attribution is required and is shown in the
+  footer of the 3D car page as well as here.
 
 ## Destinations used (all verified)
 
