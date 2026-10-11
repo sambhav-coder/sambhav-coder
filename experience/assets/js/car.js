@@ -7,6 +7,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "../../vendor/jsm/loaders/GLTFLoader.js";
 import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.js";
+import { MeshoptDecoder } from "../../vendor/jsm/libs/meshopt_decoder.module.js";
 
 (function () {
   "use strict";
@@ -41,12 +42,17 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
 
   var scene = new THREE.Scene();
   // fog colour matches the page's horizon tint so the road melts into the sky, not a hard edge
-  scene.fog = new THREE.Fog(0x0a1730, 12, 46);
-  var camera = new THREE.PerspectiveCamera(34, 1, 0.1, 140);
+  scene.fog = new THREE.Fog(0x0a1730, 14, 60);
+  var camera = new THREE.PerspectiveCamera(34, 1, 0.1, 200);
+
+  // A fixed *horizontal* field of view keeps the roadside billboards in frame across every
+  // aspect ratio (the scene box has no fixed aspect); the vertical fov is derived in resize().
+  var H_FOV_TAN = 0.78; // tan(hfov/2) ~ 76deg horizontal
 
   var target = new THREE.Vector3(0, 0.55, 0);
-  var camYaw = 0.72, camPitch = 0.27, camDist = 8.4;
-  var camDistMin = 5.4, camDistMax = 12.6;
+  // Pulled back + nearly head-on so both sides of the road (and their billboards) are visible.
+  var camYaw = 0.20, camPitch = 0.23, camDist = 11.0;
+  var camDistMin = 6.5, camDistMax = 20.0;
 
   function placeCamera() {
     camera.position.set(
@@ -157,16 +163,21 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   car.rotation.y = 0;
   scene.add(car);
 
-  // Model is authored Y-up, nose at +Z. These offsets centre it and sit it on the floor
-  // (derived from the glTF bounding box: centre=(-0.0052,0.4947,0.2385), minY=-0.1593).
-  var MODEL_OFFSET = new THREE.Vector3(0.0052, 0.1593, -0.2385);
+  // Model is authored Y-up, nose at +Z. These offsets centre it and sit it on the floor.
+  // Derived from the model's *actual* vertex bounds (centre=(-0.00025,0.5742,0.2385), minY≈0):
+  // the glTF accessor min/max are loose, so the previous offset here floated the car ~0.159.
+  var MODEL_OFFSET = new THREE.Vector3(0.00025, 0.00024, -0.23846);
 
   var PAINT_BODY = 0x3b424b;   // graphite / gunmetal — the body panels
   var PAINT_TRIM = 0x181c22;   // darker graphite — roof / secondary panels
 
   var loader = new GLTFLoader();
+  // The model is meshopt-compressed (EXT_meshopt_compression is *required*), so the
+  // decoder must be registered — and its wasm must be ready before buffers decode.
+  loader.setMeshoptDecoder(MeshoptDecoder);
   var modelURL = new URL("../../vendor/models/CarConcept.glb", import.meta.url).href;
 
+  function loadModel() {
   loader.load(modelURL, function (gltf) {
     var model = gltf.scene;
     model.position.copy(MODEL_OFFSET);
@@ -206,6 +217,10 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
     sceneEl.classList.add("no-webgl");
     if (window.console && console.error) console.error("Car model failed to load:", err);
   });
+  }
+  // wait for the meshopt wasm to be ready, then load (its 'ready' promise resolves when idle)
+  if (MeshoptDecoder && MeshoptDecoder.ready) MeshoptDecoder.ready.then(loadModel, loadModel);
+  else loadModel();
 
   /* ---------- hotspots (children of car => rotate with it) ---------- */
   var hotMat = { base: new THREE.MeshBasicMaterial({ color: 0x247bff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }) };
@@ -226,14 +241,146 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   // rear half of the glass (clear of the door mirror). Rear planes sit just behind the tail.
   var HS = 1.12;   // side-plane offset, just outside the widest part of the door
   // driver-side (+X) windows -> LinkedIn
-  addHot(0.52, 0.24, [HS, 1.16, -0.12], Math.PI / 2, { label: "LinkedIn", sub: "Sambhav Yadav", url: "https://www.linkedin.com/in/sambhav-yadav-b61001323/" });
-  addHot(0.52, 0.24, [HS, 1.16, -0.55], Math.PI / 2, { label: "LinkedIn", sub: "Campus Ninja", url: "https://www.linkedin.com/company/campusninja/" });
+  addHot(0.52, 0.24, [HS, 1.001, -0.12], Math.PI / 2, { label: "LinkedIn", sub: "Sambhav Yadav", url: "https://www.linkedin.com/in/sambhav-yadav-b61001323/" });
+  addHot(0.52, 0.24, [HS, 1.001, -0.55], Math.PI / 2, { label: "LinkedIn", sub: "Campus Ninja", url: "https://www.linkedin.com/company/campusninja/" });
   // passenger-side (-X) windows -> YouTube
-  addHot(0.52, 0.24, [-HS, 1.16, -0.12], -Math.PI / 2, { label: "YouTube", sub: "IPU Help", url: "https://www.youtube.com/@IpuHelp-p4y" });
-  addHot(0.52, 0.24, [-HS, 1.16, -0.55], -Math.PI / 2, { label: "YouTube", sub: "Campus Ninja", url: "https://youtube.com/@campusninja-official" });
+  addHot(0.52, 0.24, [-HS, 1.001, -0.12], -Math.PI / 2, { label: "YouTube", sub: "IPU Help", url: "https://www.youtube.com/@IpuHelp-p4y" });
+  addHot(0.52, 0.24, [-HS, 1.001, -0.55], -Math.PI / 2, { label: "YouTube", sub: "Campus Ninja", url: "https://youtube.com/@campusninja-official" });
   // rear (faces -Z) -> email + github
-  addHot(0.66, 0.44, [0.42, 0.72, -2.20], Math.PI, { label: "Email", sub: "ry526270@gmail.com", url: "mailto:ry526270@gmail.com" });
-  addHot(0.66, 0.44, [-0.42, 0.72, -2.20], Math.PI, { label: "GitHub", sub: "@sambhav-coder", url: "https://github.com/sambhav-coder" });
+  addHot(0.66, 0.44, [0.42, 0.561, -2.20], Math.PI, { label: "Email", sub: "ry526270@gmail.com", url: "mailto:ry526270@gmail.com" });
+  addHot(0.66, 0.44, [-0.42, 0.561, -2.20], Math.PI, { label: "GitHub", sub: "@sambhav-coder", url: "https://github.com/sambhav-coder" });
+
+  /* ---------- project billboards (real, clickable, along the road) ---------- */
+  // Each board is composed on a 2D canvas (genuine brand colours + vendored logo) and mapped
+  // onto a framed, pole-mounted panel. Two per side of the road, at different distances.
+  var billboardScreens = [];
+
+  var BB_PROJECTS = [
+    { name: "Campus Ninja", tag: "Engineering study hub", host: "campusninja.vercel.app",
+      url: "https://campusninja.vercel.app/", logo: "campusninja.png",
+      bg0: "#12141a", bg1: "#2a1507", accent: "#f06000",
+      x: 5.9, z: -2.2, w: 2.0, h: 1.0, cy: 2.72 },
+    { name: "Cyber Sakhi", tag: "AI safety companion", host: "cyber-sakhi-sooty.vercel.app",
+      url: "https://cyber-sakhi-sooty.vercel.app/", logo: "cybersakhi.png",
+      bg0: "#041634", bg1: "#2a0a16", accent: "#ff4d6a",
+      x: 6.6, z: -26, w: 2.6, h: 1.3, cy: 3.0 },
+    { name: "IPU Help", tag: "Counselling hub", host: "councelling-delta.vercel.app",
+      url: "https://councelling-delta.vercel.app/", logo: "ipuhelp.png",
+      bg0: "#0a2350", bg1: "#0e57c8", accent: "#38bdf8",
+      x: -5.9, z: -1.0, w: 2.0, h: 1.0, cy: 2.72 },
+    { name: "PetroForge", tag: "Physics \u00D7 AI digital twin", host: "petro-forge.vercel.app",
+      url: "https://petro-forge.vercel.app/", logo: "petroforge.png",
+      bg0: "#08160f", bg1: "#123524", accent: "#d99a3d",
+      x: -6.6, z: -17, w: 2.6, h: 1.3, cy: 3.0 }
+  ];
+
+  var LOGO_BASE = new URL("../img/projects/", import.meta.url).href;
+
+  function roundRect(g, x, y, w, h, r) {
+    g.beginPath();
+    g.moveTo(x + r, y);
+    g.arcTo(x + w, y, x + w, y + h, r);
+    g.arcTo(x + w, y + h, x, y + h, r);
+    g.arcTo(x, y + h, x, y, r);
+    g.arcTo(x, y, x + w, y, r);
+    g.closePath();
+  }
+
+  function fitRect(iw, ih, bx, by, bw, bh) {
+    var s = Math.min(bw / iw, bh / ih);
+    return { w: iw * s, h: ih * s, x: bx + (bw - iw * s) / 2, y: by + (bh - ih * s) / 2 };
+  }
+
+  function makeBoardTexture(p) {
+    var c = document.createElement("canvas");
+    c.width = 1024; c.height = 512;
+    var g = c.getContext("2d");
+    var grad = g.createLinearGradient(0, 0, 1024, 512);
+    grad.addColorStop(0, p.bg0); grad.addColorStop(1, p.bg1);
+    g.fillStyle = grad; g.fillRect(0, 0, 1024, 512);
+    // faint diagonal sheen
+    g.save(); g.globalAlpha = 0.07; g.fillStyle = "#ffffff";
+    for (var i = -400; i < 1024; i += 160) { g.save(); g.translate(i, 0); g.rotate(-0.55); g.fillRect(0, -200, 46, 900); g.restore(); }
+    g.restore();
+    // vignette
+    var vg = g.createRadialGradient(512, 256, 120, 512, 256, 660);
+    vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,0.36)");
+    g.fillStyle = vg; g.fillRect(0, 0, 1024, 512);
+    // accent bar + side rails
+    g.fillStyle = p.accent; g.fillRect(0, 0, 1024, 16);
+    g.fillStyle = "rgba(255,255,255,0.10)"; g.fillRect(0, 0, 6, 512); g.fillRect(1018, 0, 6, 512);
+    // logo panel
+    g.fillStyle = "rgba(255,255,255,0.07)"; roundRect(g, 58, 92, 348, 348, 36); g.fill();
+    // copy
+    g.fillStyle = "#ffffff"; g.textBaseline = "alphabetic";
+    g.font = "700 78px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif";
+    g.fillText(p.name, 456, 246);
+    g.font = "400 42px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif";
+    g.fillStyle = "rgba(255,255,255,0.82)"; g.fillText(p.tag, 458, 314);
+    // url pill
+    g.font = "600 32px system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif";
+    var label = "\u2192 " + p.host;
+    var tw = g.measureText(label).width;
+    g.fillStyle = "rgba(255,255,255,0.12)"; roundRect(g, 458, 352, tw + 46, 62, 31); g.fill();
+    g.fillStyle = p.accent; g.fillText(label, 480, 393);
+    // thin bezel
+    g.strokeStyle = "rgba(255,255,255,0.16)"; g.lineWidth = 3; g.strokeRect(1.5, 1.5, 1021, 509);
+
+    var tex = new THREE.CanvasTexture(c);
+    if ("colorSpace" in tex) tex.colorSpace = THREE.SRGBColorSpace;
+    if (renderer.capabilities && renderer.capabilities.getMaxAnisotropy) tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    // real logo, drawn once loaded (text-only board remains a valid fallback)
+    var img = new Image();
+    img.onload = function () {
+      var r = fitRect(img.width, img.height, 58, 92, 348, 348);
+      g.drawImage(img, r.x, r.y, r.w, r.h);
+      tex.needsUpdate = true;
+    };
+    img.src = LOGO_BASE + p.logo;
+    return tex;
+  }
+
+  function buildBillboard(p) {
+    var group = new THREE.Group();
+    group.position.set(p.x, 0, p.z);
+    // face the viewer (ground-plane heading toward the camera)
+    group.rotation.y = Math.atan2(camera.position.x - p.x, camera.position.z - p.z);
+
+    var screen = new THREE.Mesh(
+      new THREE.PlaneGeometry(p.w, p.h),
+      new THREE.MeshBasicMaterial({ map: makeBoardTexture(p), fog: false, toneMapped: false, side: THREE.DoubleSide })
+    );
+    screen.position.set(0, p.cy, 0.1);
+
+    var frameMat = new THREE.MeshStandardMaterial({
+      color: 0x0d1016, metalness: 0.65, roughness: 0.42,
+      emissive: new THREE.Color(p.accent), emissiveIntensity: 0.22
+    });
+    var frame = new THREE.Mesh(new THREE.BoxGeometry(p.w + 0.22, p.h + 0.22, 0.16), frameMat);
+    frame.position.set(0, p.cy, 0);
+    frame.castShadow = true; frame.receiveShadow = true;
+    group.add(frame, screen);
+
+    var postH = Math.max(0.6, p.cy - p.h / 2 - 0.06);
+    var postMat = new THREE.MeshStandardMaterial({ color: 0x0d1016, metalness: 0.5, roughness: 0.55 });
+    var postGeo = new THREE.CylinderGeometry(0.06, 0.075, postH, 10);
+    var px = Math.min(0.72, p.w * 0.34);
+    [-px, px].forEach(function (ox) {
+      var post = new THREE.Mesh(postGeo, postMat);
+      post.position.set(ox, postH / 2, 0);
+      post.castShadow = true;
+      group.add(post);
+    });
+    var base = new THREE.Mesh(new THREE.BoxGeometry(p.w * 0.72, 0.14, 0.5), postMat);
+    base.position.set(0, 0.07, 0);
+    group.add(base);
+
+    screen.userData = { label: p.name, sub: p.tag, url: p.url, billboard: true, frame: frameMat };
+    billboardScreens.push(screen);
+    scene.add(group);
+  }
+  BB_PROJECTS.forEach(buildBillboard);
 
   /* ---------- interaction ---------- */
   var raycaster = new THREE.Raycaster();
@@ -242,6 +389,8 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   var dragging = false, moved = 0, lastX = 0, lastY = 0, pointed = false;
   var targetYaw = 0, yaw = targetYaw;
   var lastInteraction = performance.now();
+  // hotspots rotate with the car; billboards are static in the world
+  var pickables = hotspots.concat(billboardScreens);
 
   function pointerNDC(ev) {
     var r = canvas.getBoundingClientRect();
@@ -250,14 +399,20 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   }
   function pick() {
     raycaster.setFromCamera(ndc, camera);
-    var hits = raycaster.intersectObjects(hotspots, false);
+    var hits = raycaster.intersectObjects(pickables, false);
     return hits.length ? hits[0].object : null;
   }
   function setHover(h) {
     if (hovered === h) return;
-    if (hovered) hovered.material.opacity = 0;
+    if (hovered) {
+      if (hovered.userData.billboard && hovered.userData.frame) hovered.userData.frame.emissiveIntensity = 0.22;
+      else if (hovered.material) hovered.material.opacity = 0;
+    }
     hovered = h;
-    if (hovered) hovered.material.opacity = 0.26;
+    if (hovered) {
+      if (hovered.userData.billboard && hovered.userData.frame) hovered.userData.frame.emissiveIntensity = 0.95;
+      else if (hovered.material) hovered.material.opacity = 0.26;
+    }
   }
   function updateLabel() {
     if (!hovered) { labelEl.classList.remove("on"); return; }
@@ -318,7 +473,7 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   });
 
   resetBtn.addEventListener("click", function () {
-    targetYaw = 0; camDist = 8.4; camPitch = 0.27;
+    targetYaw = 0; camDist = 11.0; camPitch = 0.23;
     placeCamera(); lastInteraction = performance.now();
     resetBtn.blur();
   });
@@ -329,6 +484,9 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
     var h = sceneEl.clientHeight || 380;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
+    // derive vertical fov so the horizontal fov stays constant (keeps billboards in frame)
+    var vfov = 2 * Math.atan(H_FOV_TAN / camera.aspect) * 180 / Math.PI;
+    camera.fov = Math.max(30, Math.min(60, vfov));
     camera.updateProjectionMatrix();
   }
   resize();

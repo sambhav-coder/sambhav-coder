@@ -8,8 +8,8 @@ of the GitHub profile README:
 - `index.html` — a small landing page linking both.
 
 Nothing here talks to a server. There are **no external network calls at runtime**:
-Three.js (r160, ES modules), `GLTFLoader` and the 3D model are vendored under
-`vendor/`, and all icons are inline SVG.
+Three.js (r160, ES modules), `GLTFLoader`, the meshopt decoder and the 3D model
+are vendored under `vendor/`, and all icons are inline SVG.
 
 ## Run locally
 
@@ -43,6 +43,25 @@ vercel --prod # production (only after you explicitly approve deploying)
 - If WebGL is unavailable, the car scene swaps in a static illustration plus the
   same link grid instead of a black box.
 
+## Project billboards
+
+Besides the clickable car hotspots, the 3D scene renders four roadside
+billboards (two per side of the road) for Sambhav's own projects. Each is a real
+`Mesh` in the same scene — no second renderer — and opens the project site in a
+new tab (`noopener`). Brand logos are served locally from
+`assets/img/projects/` (no runtime network calls beyond the link you click):
+
+| Billboard | Destination | Logo (local) |
+| :-- | :-- | :-- |
+| Campus Ninja | https://campusninja.vercel.app/ | `assets/img/projects/campusninja.png` |
+| IPU Help | https://councelling-delta.vercel.app/ | `assets/img/projects/ipuhelp.png` |
+| Cyber Sakhi | https://cyber-sakhi-sooty.vercel.app/ | `assets/img/projects/cybersakhi.png` |
+| PetroForge | https://petro-forge.vercel.app/ | `assets/img/projects/petroforge.png` |
+
+The camera uses a fixed **horizontal** field of view (vertical fov is derived
+from the aspect ratio in `resize()`) so the boards stay framed on any window
+size. Reused logos are noted in `../assets/attribution.md`.
+
 ## 3D model licence & attribution
 
 The car scene renders `vendor/models/CarConcept.glb` — the **"Car Concept"** glTF sample:
@@ -52,6 +71,12 @@ The car scene renders `vendor/models/CarConcept.glb` — the **"Car Concept"** g
 - **Licence:** [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) — full text in
   `vendor/models/CarConcept-LICENSE.md`. Attribution is required and is shown in the
   footer of the 3D car page as well as here.
+- **Compression:** the shipped `CarConcept.glb` is optimised with
+  [`gltfpack`](https://github.com/zeux/meshoptimizer) (`-cc -tw -tl 1024`) — meshopt
+  geometry compression plus WebP textures, ~11.8 MB → ~2.0 MB. It therefore requires
+  the vendored `vendor/jsm/libs/meshopt_decoder.module.js`, registered in `car.js` via
+  `loader.setMeshoptDecoder(...)`; the load waits on the decoder's `ready` promise
+  because `EXT_meshopt_compression` is a required extension.
 
 ## Destinations used (all verified)
 

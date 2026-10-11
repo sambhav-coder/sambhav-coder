@@ -232,3 +232,23 @@ Attribution is provided on the 3D car page footer and in `experience/README.md`
 as required by CC-BY-4.0. The body paint colour was changed to a graphite /
 gunmetal finish to suit the dark studio scene; the model geometry is otherwise
 unmodified.
+
+The shipped `CarConcept.glb` is compressed with [`gltfpack`](https://github.com/zeux/meshoptimizer)
+(meshopt geometry compression + WebP textures, ~11.8 MB → ~2.0 MB). It needs the
+vendored `experience/vendor/jsm/libs/meshopt_decoder.module.js` (MIT, part of
+meshoptimizer by Arseny Kapoulkine), wired via `loader.setMeshoptDecoder(...)`.
+
+## Project billboards (car scene)
+
+The 3D car scene also shows four roadside billboards for Sambhav's own projects.
+Each board reuses that project's **genuine logo/brand asset**, copied locally into
+`experience/assets/img/projects/` so the page makes no network calls:
+
+- **Campus Ninja** — logo from `campusninja.vercel.app` (`campusninja.png`)
+- **IPU Help** — icon from `councelling-delta.vercel.app` (`ipuhelp.png`)
+- **Cyber Sakhi** — logo from `cyber-sakhi-sooty.vercel.app` (`cybersakhi.png`)
+- **PetroForge** — icon from `petro-forge.vercel.app` (`petroforge.png`)
+
+These marks identify Sambhav Yadav's own projects. The underlying brands/logos
+remain the property of their respective owners and are used here only to link to
+those projects.
