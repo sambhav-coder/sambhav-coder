@@ -66,9 +66,9 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   } catch (envErr) { /* reflections are a nice-to-have; scene still renders */ }
 
   /* ---------- lighting (studio, fixed while the car rotates) ---------- */
-  scene.add(new THREE.HemisphereLight(0x2f56b0, 0x05070f, 0.42));
+  scene.add(new THREE.HemisphereLight(0x4a6ea8, 0x0a1018, 0.6));
 
-  var key = new THREE.DirectionalLight(0xd6e4ff, 1.5);
+  var key = new THREE.DirectionalLight(0xe6eeff, 1.7);
   key.position.set(6, 9, 6);
   key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048);
@@ -79,15 +79,16 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
   key.shadow.bias = -0.0005;
   scene.add(key);
 
-  var rim = new THREE.DirectionalLight(0xff6a7e, 1.0);
-  rim.position.set(-7, 4, -6);
+  // cool rim (the old red rim light was washing the whole road surface red)
+  var rim = new THREE.DirectionalLight(0x7f92ff, 0.55);
+  rim.position.set(-8, 5, -7);
   scene.add(rim);
 
-  var fill = new THREE.DirectionalLight(0x247bff, 0.8);
+  var fill = new THREE.DirectionalLight(0x247bff, 0.7);
   fill.position.set(-5, 3.5, 7);
   scene.add(fill);
 
-  var under = new THREE.PointLight(0x247bff, 0.6, 12, 2);
+  var under = new THREE.PointLight(0x247bff, 0.5, 12, 2);
   under.position.set(0, 0.35, 0);
   scene.add(under);
 
@@ -96,13 +97,13 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
     var c = document.createElement("canvas");
     c.width = c.height = 512;
     var g = c.getContext("2d");
-    g.fillStyle = "#191d24";
+    g.fillStyle = "#262b33";
     g.fillRect(0, 0, 512, 512);
     for (var i = 0; i < 12000; i++) {
       var x = Math.random() * 512, y = Math.random() * 512;
       var s = Math.random() * 1.7 + 0.3;
       g.fillStyle = Math.random() > 0.55
-        ? "rgba(132,152,192," + (0.015 + Math.random() * 0.05) + ")"
+        ? "rgba(150,168,200," + (0.02 + Math.random() * 0.06) + ")"
         : "rgba(0,0,0," + (0.05 + Math.random() * 0.15) + ")";
       g.fillRect(x, y, s, s);
     }
@@ -116,8 +117,8 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
     return t;
   }
 
-  var roadMat = new THREE.MeshStandardMaterial({ map: makeAsphaltTexture(), color: 0xffffff, roughness: 0.6, metalness: 0.14 });
-  roadMat.envMapIntensity = 0.4;
+  var roadMat = new THREE.MeshStandardMaterial({ map: makeAsphaltTexture(), color: 0xffffff, roughness: 0.72, metalness: 0.08 });
+  roadMat.envMapIntensity = 0.3;
   var road = new THREE.Mesh(new THREE.PlaneGeometry(160, 160), roadMat);
   road.rotation.x = -Math.PI / 2;
   road.receiveShadow = true;
@@ -178,14 +179,14 @@ import { RoomEnvironment } from "../../vendor/jsm/environments/RoomEnvironment.j
         var m = mats[i];
         if (!m) continue;
         if ("envMapIntensity" in m) m.envMapIntensity = 1.0;
-        if (m.name === "Paint 1 Carmine") {
+        if (m.name && m.name.indexOf("Paint 1") === 0) {
           if (m.color) m.color.setHex(PAINT_BODY);
           if ("metalness" in m) m.metalness = 0.9;
           if ("roughness" in m) m.roughness = 0.28;
           if ("clearcoat" in m) m.clearcoat = 1.0;
           if ("clearcoatRoughness" in m) m.clearcoatRoughness = 0.07;
           m.needsUpdate = true;
-        } else if (m.name === "Paint 2 Carmine") {
+        } else if (m.name && m.name.indexOf("Paint 2") === 0) {
           if (m.color) m.color.setHex(PAINT_TRIM);
           if ("roughness" in m) m.roughness = 0.34;
           if ("clearcoat" in m) m.clearcoat = 1.0;
